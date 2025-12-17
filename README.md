@@ -21,12 +21,16 @@ Successful exploitation resulted in the compromise of the `factory` user account
 
 The assessment followed a standard Social Engineering attack lifecycle: **Research -> Hook -> Play -> Exit.**
 
+### Attack Overview
+The following mind map illustrates the concepts and flow utilized during this engagement, highlighting the relationship between Social Engineering principles and the technical execution via SET.
+![Attack Mind Map](images/Mind_Map.png)
+
 ### Phase 1: Infrastructure Setup (The Trap)
 I deployed a lightweight Python web server to host a cloned version of the TBFC login portal. This server was configured to log any POST requests (credentials) directly to the console.
 
 **Listener Configuration:**
 I initiated the server on the attack host (`10.67.74.12`) on port 8000.
-![Server Start](images/first%20step.jpg)
+![Server Start](images/first_step.PNG)
 
 **The Phishing Page:**
 The landing page was designed to mimic the legitimate TBFC Staff Portal to build trust with the victim.
@@ -36,7 +40,7 @@ The landing page was designed to mimic the legitimate TBFC Staff Portal to build
 I utilized the **Social-Engineer Toolkit (SET)** to orchestrate the email delivery. The attack vector selected was a **Mass Mailer Attack**.
 
 **Selection:**
-![SET Menu](images/option%205.PNG)
+![SET Menu](images/option_5&1.PNG)
 
 **Configuration Details:**
 I configured the email to appear as if it came from "Flying Deer," a known shipping partner, citing a "Shipping Schedule Change" to create urgency.
@@ -45,14 +49,14 @@ I configured the email to appear as if it came from "Flying Deer," a known shipp
 * **SMTP Relay:** `10.67.128.16`
 * **Payload URL:** `http://10.67.74.12:8000`
 
-![SET Configuration](images/the%20rest.jpg)
+![SET Configuration](images/the_rest.PNG)
 
 ### Phase 3: Exploitation (The Catch)
 Once the email was sent, I monitored the Python web server. Within minutes, the target user clicked the link and attempted to log in. The script successfully intercepted the credentials in cleartext.
 
 **Captured Data:**
 The listener captured the password `unranked-wisdom-anthem` for the user `admin`.
-![Credentials Captured](images/password.jpg)
+![Credentials Captured](images/password.PNG)
 
 ### Phase 4: Post-Exploitation Verification
 To verify the impact of the compromised credentials, I utilized the captured password to attempt a login as the `factory` user on the legitimate internal portal.
@@ -62,7 +66,7 @@ To verify the impact of the compromised credentials, I utilized the captured pas
 
 **Successful Access:**
 The credentials were valid, granting full access to the "Factory" mailbox. I was able to retrieve sensitive internal communications regarding a production request for 1,984,000 units.
-![Inbox Access](images/web%20app%20access.jpg)
+![Inbox Access](images/web_app_access.PNG)
 
 ---
 
